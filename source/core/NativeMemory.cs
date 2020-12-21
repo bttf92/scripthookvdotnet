@@ -304,7 +304,6 @@ namespace SHVDN
 				IsWantedOffset = *(int*)(address + 40);
 			}
 
-
 			address = FindPattern("\x45\x33\xC9\x41\xB0\x01\x40\x8A\xD7", "xxxxxxxxx");
 			if (address != null)
 			{
@@ -318,10 +317,10 @@ namespace SHVDN
 				AlarmTimeOffset = *(int*)(address + 52);
 			}
 
-			address = FindPattern("\x44\x0F\x2F\x43\x00\x45\x8D\x74\x24\x01", "xxxx?xxxxx");
+			address = FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88", "xxxx????xxxxxxx");
 			if (address != null)
 			{
-				HandlingDataOffset = *(int*)(address - 35);
+				HandlingDataOffset = *(int*)(address + 22);
 			}
 
 			address = FindPattern("\x48\x85\xC0\x74\x3C\x8B\x80\x00\x00\x00\x00\xC1\xE8\x0F", "xxxxxxx????xxx");
@@ -803,7 +802,9 @@ namespace SHVDN
 		{
 			ulong MemAddress = GetEntityAddressFunc(handle);
 
-			var func2 = GetDelegateForFunctionPointer<FuncUlongUlongDelegate>(ReadIntPtr(ReadIntPtr(new IntPtr((long)MemAddress)) + 88));
+			int offset = NativeMemory.GetGameVersion() >= 63 /*v1_0_2189_0_Steam*/ ? 96 : 88;
+
+			var func2 = GetDelegateForFunctionPointer<FuncUlongUlongDelegate>(ReadIntPtr(ReadIntPtr(new IntPtr((long)MemAddress)) + offset));
 			ulong Addr2 = func2(MemAddress);
 			ulong Addr3;
 			if (Addr2 == 0)

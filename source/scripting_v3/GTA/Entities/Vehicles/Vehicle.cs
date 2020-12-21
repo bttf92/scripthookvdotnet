@@ -513,6 +513,7 @@ namespace GTA
 
 		/// <summary>
 		/// Gets or sets this <see cref="Vehicle"/> oil level.
+		/// If this value is above zero, this value decreases instead of <see cref="EngineHealth"/> when the engine emits black smoke.
 		/// </summary>
 		public float OilLevel
 		{
@@ -569,7 +570,7 @@ namespace GTA
 					return 0.0f;
 				}
 
-				return SHVDN.NativeMemory.ReadFloat(address + 0x0104);
+				return HandlingData.OilVolume;
 			}
 		}
 
@@ -613,7 +614,7 @@ namespace GTA
 					return 0.0f;
 				}
 
-				return SHVDN.NativeMemory.ReadFloat(address + 0x0100);
+				return HandlingData.PetrolTankVolume;
 			}
 		}
 
